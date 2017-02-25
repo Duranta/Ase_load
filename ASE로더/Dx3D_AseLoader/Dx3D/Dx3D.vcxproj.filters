@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="클래스 파일">
+      <UniqueIdentifier>{cf015ac9-ddb4-4764-abd5-13ca2e267bd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="클래스 파일\2. 기본 클래스">
+      <UniqueIdentifier>{d4e955dc-5da5-4dd7-89a7-ad663afe392f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="클래스 파일\3. 매니져 클래스">
+      <UniqueIdentifier>{9c54f30c-26db-4ee5-b4d1-5725a239d75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="클래스 파일\4. 맵 클래스">
+      <UniqueIdentifier>{29dc12c2-5122-4ef1-be5d-e183de0ca92a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="클래스 파일\5. 캐릭터 클래스">
+      <UniqueIdentifier>{0c02315b-7cee-4531-9861-fe42c6672f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="클래스 파일\6. 파일 로더">
+      <UniqueIdentifier>{87f66d33-4079-4657-8bfa-7fe3ae8af40c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="클래스 파일\1. 메인 클래스">
+      <UniqueIdentifier>{c540044b-3c49-4a72-9d9b-994528546160}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Dx3D.ico">
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cDeviceManager.h">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureManager.h">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjectManager.h">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cPyramid.h">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cGrid.h">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharactorController.h">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cCube.h">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="Dx3D.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cCamera.h">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cObject.h">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cAutoReleasePool.h">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameObject.h">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cInterpolation.h">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cTimeManager.h">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cWall.h">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cMtlTex.h">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjLoader.h">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClInclude>
+    <ClInclude Include="cGroup.h">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjMap.h">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClInclude>
+    <ClInclude Include="iMap.h">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cMainGame.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DUtility.h">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="Asciitok.h">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrame.h">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClInclude>
+    <ClInclude Include="cAseLoader.h">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClInclude>
+    <ClInclude Include="cAseCharacter.h">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cTextureManager.cpp">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cDeviceManager.cpp">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjectManager.cpp">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cGrid.cpp">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cPyramid.cpp">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharactorController.cpp">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cCube.cpp">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="Dx3D.cpp">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cCamera.cpp">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cObject.cpp">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cAutoReleasePool.cpp">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameObject.cpp">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cInterpolation.cpp">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cTimeManager.cpp">
+      <Filter>클래스 파일\3. 매니져 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cWall.cpp">
+      <Filter>클래스 파일\4. 맵 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cMtlTex.cpp">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjLoader.cpp">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClCompile>
+    <ClCompile Include="cGroup.cpp">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjMap.cpp">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClCompile>
+    <ClCompile Include="cMainGame.cpp">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DUtility.cpp">
+      <Filter>클래스 파일\1. 메인 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrame.cpp">
+      <Filter>클래스 파일\2. 기본 클래스</Filter>
+    </ClCompile>
+    <ClCompile Include="cAseLoader.cpp">
+      <Filter>클래스 파일\6. 파일 로더</Filter>
+    </ClCompile>
+    <ClCompile Include="cAseCharacter.cpp">
+      <Filter>클래스 파일\5. 캐릭터 클래스</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Dx3D.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
