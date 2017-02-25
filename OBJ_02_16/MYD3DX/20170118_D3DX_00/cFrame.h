@@ -48,15 +48,15 @@ public:
 	cMtlTex* GetMtlTex(){ return m_pMtlTex; };
 	void SetMtlTex(cMtlTex* pTex);
 
-	void Update();
 	void Render();
 	void AddChild(cFrame* pChild);
 	void SetMyNodeName(string nodeName)   { m_nodeName = nodeName; }
 	void SetParentNodeName(string parentName){ m_parentName = parentName; }
-
+	void Update();
 	string GetNodeName(){ return m_nodeName; }
 	string GetParentName(){ return m_parentName; }
 
 	vector<cFrame*> GetChild(){ return v_child; }
-
+	// 애니메이션 추가. 
+	//void Update(int iKeyFrame , D3DXMATRIXA16* pMatParent);
 };

@@ -43,6 +43,7 @@ void cFrame::Update()
 	}
 
 }
+
 void cFrame::Render()
 {
 	if (m_pMtlTex)
