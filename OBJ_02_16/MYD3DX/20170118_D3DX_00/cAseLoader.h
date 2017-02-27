@@ -25,9 +25,10 @@ public:
 		OUT cFrame& Frame);
 
 	void makeNode(cFrame& Frame);
+	void makeTM(cFrame& Frame);
 	cFrame* FineFrame(map<string, cFrame*>& mapFrame, const char* cName);
 	
 	void CalcLocalTM(cFrame& pFrame);
-
+	void InvLocalPos(cFrame& pFrame);
 };
 

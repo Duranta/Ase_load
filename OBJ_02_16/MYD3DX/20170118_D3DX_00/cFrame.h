@@ -52,6 +52,8 @@ public:
 	void AddChild(cFrame* pChild);
 	void SetMyNodeName(string nodeName)   { m_nodeName = nodeName; }
 	void SetParentNodeName(string parentName){ m_parentName = parentName; }
+	void SetTM(D3DXMATRIXA16 mat) { m_matLocalTM = mat; }
+
 	void Update();
 	string GetNodeName(){ return m_nodeName; }
 	string GetParentName(){ return m_parentName; }

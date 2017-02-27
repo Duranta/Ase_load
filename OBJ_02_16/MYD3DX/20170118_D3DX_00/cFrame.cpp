@@ -58,8 +58,11 @@ void cFrame::Render()
 			g_pD3DDevice->SetTexture(0, m_pMtlTex->GetTexture());
 
 		}
-
+		D3DXMATRIXA16 iden;
+		D3DXMatrixIdentity(&iden);
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &iden);
+
 		g_pD3DDevice->SetMaterial(&m_pMtlTex->GetMtl());
 		g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
 		g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_vecVertex.size() / 3,
