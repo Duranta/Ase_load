@@ -40,6 +40,8 @@ class cFrame :
 	D3DXMATRIXA16			m_matLocalTM;
 	vector<ST_POS_SAMPLE>	m_vecPosTrack;
 	vector<ST_ROT_SAMPLE>	m_vecRotTrack;
+	
+	ST_FRAMFE_DATA m_stTickData;
 
 public:
 	cFrame();
@@ -52,13 +54,16 @@ public:
 	void AddChild(cFrame* pChild);
 	void SetMyNodeName(string nodeName)   { m_nodeName = nodeName; }
 	void SetParentNodeName(string parentName){ m_parentName = parentName; }
+	
 	void SetTM(D3DXMATRIXA16 mat) { m_matLocalTM = mat; }
-
-	void Update();
+	D3DXMATRIXA16 GetTM() { return m_matLocalTM; }
+	void MainUpate();
+	void Update(int keyFrame, D3DXMATRIXA16* pParent);
 	string GetNodeName(){ return m_nodeName; }
 	string GetParentName(){ return m_parentName; }
 
 	vector<cFrame*> GetChild(){ return v_child; }
 	// 애니메이션 추가. 
 	//void Update(int iKeyFrame , D3DXMATRIXA16* pMatParent);
+	void SetTickData(ST_FRAMFE_DATA data) { m_stTickData = data; }
 };

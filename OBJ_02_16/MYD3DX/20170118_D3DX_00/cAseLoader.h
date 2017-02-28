@@ -1,8 +1,9 @@
 #pragma once
 #include "cObject.h"
+#include "cFrame.h"
 
 class cMtlTex;
-class cFrame;
+//class cFrame;
 
 class cAseLoader :
 	public cObject
@@ -15,6 +16,8 @@ class cAseLoader :
 	void LoadMtlLib(char* szFilePath);
 
 	map<string, cFrame*> m_Frame;
+	
+	ST_FRAMFE_DATA m_stTickData;
 
 public:
 	cAseLoader();
@@ -27,8 +30,6 @@ public:
 	void makeNode(cFrame& Frame);
 	void makeTM(cFrame& Frame);
 	cFrame* FineFrame(map<string, cFrame*>& mapFrame, const char* cName);
-	
-	void CalcLocalTM(cFrame& pFrame);
 	void InvLocalPos(cFrame& pFrame);
 };
 

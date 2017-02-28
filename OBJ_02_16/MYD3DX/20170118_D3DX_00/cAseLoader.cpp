@@ -24,7 +24,6 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 	char nodeName[MAXCHAR]; //현재 노드 이름 저장
 	int texNum = -1;
 	D3DXMATRIXA16 mat;
-	D3DXMatrixIdentity(&mat); // 초기화 
 	cFrame* pFrame = NULL;
 
 	vector<ST_PNT_VERTEX> vecSPV;
@@ -101,9 +100,7 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 				}
 
 				//============ 멀리 떨어져 있는 경우 여기 때문
-				// mat 값이 정확히 들어가지 않은것 같음. 
 				pFrame->SetMatWorld(mat);
-				D3DXMatrixIdentity(&mat); // 초기화 
 
 				vCount = 0;
 				vecPos.clear();
@@ -152,12 +149,11 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 			//fscanf(fp, "%f %f %f", &mat._11, &mat._13, &mat._12); // z y 순서 바꿈.
 			//mat._14 = 0;
 			// =========== 수정     ================
-			D3DXMatrixIdentity(&mat); // 초기화 
 			char oneLine[MAXCHAR] = {};
-
+			char temp[MAXCHAR] = {};
 
 			fgets(oneLine, MAXCHAR, fp);
-			sscanf(oneLine, "%f %f %f"	, &mat._11, &mat._13, &mat._12);
+			sscanf(oneLine, "%f %f %f", &mat._11, &mat._13, &mat._12);
 			mat._14 = 0;
 
 			fgets(oneLine, MAXCHAR, fp);
@@ -361,7 +357,6 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 	}
 
 	pFrame->SetMatWorld(mat);
-	D3DXMatrixIdentity(&mat); // 초기화 
 
 	vCount = 0;
 	vecPos.clear();
@@ -376,7 +371,8 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 	isNormal = false;
 
 	makeNode(Frame);
-	makeTM(Frame);
+	//makeTM(Frame);
+	InvLocalPos(Frame);
 }
 
 void cAseLoader::LoadMtlLib(char* szFilePath)
@@ -388,6 +384,8 @@ void cAseLoader::LoadMtlLib(char* szFilePath)
 	int materialCountTemp = 0;
 	int materialNum = 0;
 	char materName[MAXCHAR];
+
+
 	while (true)
 	{
 		char lineHeader[1024] = { 0, };
@@ -502,6 +500,31 @@ void cAseLoader::LoadMtlLib(char* szFilePath)
 				break;
 			}
 		}
+		else if (strcmp(lineHeader, "*SCENE_FIRSTFRAME") == 0)
+		{
+			int iTick=0;
+			fscanf_s(fp, "%d\n", &iTick, sizeof(int));
+			m_stTickData.nFirstFrame = iTick;
+		}
+		else if (strcmp(lineHeader, "*SCENE_LASTFRAME") == 0)
+		{
+			int iTick = 0;
+			fscanf_s(fp, "%d\n", &iTick, sizeof(int));
+			m_stTickData.nLastFrame = iTick;
+		}
+		else if (strcmp(lineHeader, "*SCENE_FRAMESPEED") == 0)
+		{
+			int iTick = 0;
+			fscanf_s(fp, "%d\n", &iTick, sizeof(int));
+			m_stTickData.nFrameSpeed = iTick;
+		}
+		else if (strcmp(lineHeader, "*SCENE_TICKSPERFRAME") == 0)
+		{
+			int iTick = 0;
+			fscanf_s(fp, "%d\n", &iTick, sizeof(int));
+			m_stTickData.nTicksPerFrame = iTick;
+		}
+
 	}
 
 	//fclose(fp);
@@ -523,41 +546,28 @@ cFrame* cAseLoader::FineFrame(map<string, cFrame*>& mapFrame, const char* cName)
 	return NULL;
 }
 
-void cAseLoader::CalcLocalTM(cFrame & pFrame)
-{
-	// W_MAT = L_MAT * 부모_MAT;
-	//      w_mat *mat-1 = L_mat; 
-	// L_MAT = W_MAT * MAT(-1);
-
-	if (strcmp(pFrame.GetParentName().c_str(), "NULL") == 0)
-	{
-		pFrame.m_matLocalTM = pFrame.GetMatWorld();
-	}
-
-	vector<cFrame*>::iterator iter;
-	vector<cFrame*>::iterator iterEnd = pFrame.v_child.end();
-
-	for (iter = pFrame.v_child.begin(); iter != iterEnd; ++iter)
-	{
-		(*iter)->Render();
-		//
-		// TM 계산 할거 넣는다. 
-
-	}
-
-}
-
 void cAseLoader::InvLocalPos(cFrame & pFrame)
 {
 	map<string, cFrame*>::iterator iter;
 	map<string, cFrame*>::iterator iterEnd = m_Frame.end();
+
 	//string debug;
 	char* cName[MAXCHAR];
 
 	for (iter = m_Frame.begin(); iter != iterEnd; ++iter)
 	{
 		// 노말 , 정점 
-		// iter->second->GetVertex()
+		for (int i = 0; i < iter->second->GetVertex().size(); ++i)
+		{
+			D3DXMATRIXA16 matInvWorld;
+			D3DXMatrixInverse(&matInvWorld, 0, &iter->second->GetMatWorld());
+			D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
+				&iter->second->GetVertex()[i].p, &matInvWorld);
+
+			D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
+				&iter->second->GetVertex()[i].p, &matInvWorld);
+
+		}
 	}
 }
 
@@ -570,6 +580,7 @@ void cAseLoader::makeNode(cFrame& Frame)
 	map<string, cFrame*>::iterator iterEnd = m_Frame.end();
 	//string debug;
 	char* cName[MAXCHAR];
+	D3DXMATRIXA16 matInvParent;
 
 	for (iter = m_Frame.begin(); iter != iterEnd; ++iter)
 	{
@@ -577,11 +588,21 @@ void cAseLoader::makeNode(cFrame& Frame)
 		if (strcmp(iter->second->GetParentName().c_str(), "NULL") == 0)
 		{
 			// 첫번째 값 집어 넣는다. 
-			Frame = *iter->second;
+			//Frame = *iter->second;
+			D3DXMATRIXA16 matIden;
+
+			D3DXMatrixIdentity(&matIden);
+			Frame.m_matLocalTM = matIden; //FrameTM 을 단위행렬로 초기화
+			Frame.SetTickData(m_stTickData);
+			iter->second->SetTM(iter->second->GetMatWorld());
+			Frame.AddChild(iter->second);
 		}
 		else
 		{
 			m_Frame[iter->second->GetParentName()]->AddChild(iter->second);
+			D3DXMatrixInverse(&matInvParent, 0, &m_Frame[iter->second->GetParentName()]->GetMatWorld());
+			//iter->second->m_matLocalTM *= matInvParent;
+			iter->second->SetTM(iter->second->GetMatWorld()*matInvParent);
 		}
 	}
 }
@@ -603,11 +624,9 @@ void cAseLoader::makeTM(cFrame & Frame)
 		}
 		else
 		{
-			D3DXMatrixIdentity(&matInvParent);
 			D3DXMatrixInverse(&matInvParent, 0, &m_Frame[iter->second->GetParentName()]->GetMatWorld());
 			//iter->second->m_matLocalTM *= matInvParent;
 			iter->second->SetTM(iter->second->GetMatWorld()*matInvParent);
-
 		}
 	}
 }

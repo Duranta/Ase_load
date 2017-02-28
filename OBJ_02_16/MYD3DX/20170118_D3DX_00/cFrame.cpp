@@ -32,16 +32,36 @@ void cFrame::AddChild(cFrame* pChild)
 	//			materName[strlen(materName) - 1] = '\0';
 
 }
-void cFrame::Update()
+void cFrame::MainUpate()
+{/*
+	int nFirstTick = m_stScene.nFirstFrame * m_stScene.nTicksPerFrame;
+	int nLastTick = m_stScene.nLastFrame * m_stScene.nTicksPerFrame;
+	int nTickSpeed = m_stScene.nFrameSpeed * m_stScene.nTicksPerFrame;
+	int nKeyFrame = (nTickSpeed * GetTickCount() / 1000) % (nLastTick - nFirstTick) + nFirstTick;
+
+	D3DXMATRIXA16 matS, matR, matW;
+	D3DXMatrixScaling(&matS, 5.f, 5.f, 5.f);
+	D3DXMatrixRotationY(&matR, D3DX_PI);
+
+	matW = matS * matR * *matWorld;*/
+
+	vector<cFrame*>::iterator iter;
+	vector<cFrame*>::iterator iterEnd = v_child.end();
+
+	for (iter = v_child.begin(); iter != iterEnd; ++iter)
+	{
+		// (*iter)->Update(keyFrame, * pParent);
+	}
+}
+void cFrame::Update(int keyFrame, D3DXMATRIXA16* pParent)
 {
 	vector<cFrame*>::iterator iter;
 	vector<cFrame*>::iterator iterEnd = v_child.end();
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-		(*iter)->Render();
+		// (*iter)->Render(keyFrame, * pParent);
 	}
-
 }
 
 void cFrame::Render()
