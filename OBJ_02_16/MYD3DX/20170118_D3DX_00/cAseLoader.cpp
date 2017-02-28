@@ -594,7 +594,9 @@ void cAseLoader::makeNode(cFrame& Frame)
 			D3DXMatrixIdentity(&matIden);
 			Frame.m_matLocalTM = matIden; //FrameTM 을 단위행렬로 초기화
 			Frame.SetTickData(m_stTickData);
+
 			iter->second->SetTM(iter->second->GetMatWorld());
+
 			Frame.AddChild(iter->second);
 		}
 		else

@@ -33,34 +33,37 @@ void cFrame::AddChild(cFrame* pChild)
 
 }
 void cFrame::MainUpate()
-{/*
-	int nFirstTick = m_stScene.nFirstFrame * m_stScene.nTicksPerFrame;
-	int nLastTick = m_stScene.nLastFrame * m_stScene.nTicksPerFrame;
-	int nTickSpeed = m_stScene.nFrameSpeed * m_stScene.nTicksPerFrame;
+{
+	int nFirstTick = m_stTickData.nFirstFrame * m_stTickData.nTicksPerFrame;
+	int nLastTick = m_stTickData.nLastFrame * m_stTickData.nTicksPerFrame;
+	int nTickSpeed = m_stTickData.nFrameSpeed * m_stTickData.nTicksPerFrame;
 	int nKeyFrame = (nTickSpeed * GetTickCount() / 1000) % (nLastTick - nFirstTick) + nFirstTick;
 
 	D3DXMATRIXA16 matS, matR, matW;
 	D3DXMatrixScaling(&matS, 5.f, 5.f, 5.f);
 	D3DXMatrixRotationY(&matR, D3DX_PI);
 
-	matW = matS * matR * *matWorld;*/
+	//matW = matS * matR * matWorld;
 
 	vector<cFrame*>::iterator iter;
 	vector<cFrame*>::iterator iterEnd = v_child.end();
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-		// (*iter)->Update(keyFrame, * pParent);
+		 (*iter)->Update(nKeyFrame, &m_matLocalTM);
 	}
 }
 void cFrame::Update(int keyFrame, D3DXMATRIXA16* pParent)
 {
+	D3DXMATRIXA16 matLocalT, matLocalR;
+
+	 this->m_matLocalTM *=(*pParent);
 	vector<cFrame*>::iterator iter;
 	vector<cFrame*>::iterator iterEnd = v_child.end();
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-		// (*iter)->Render(keyFrame, * pParent);
+		 (*iter)->Update(keyFrame, &(this->m_matLocalTM));
 	}
 }
 
@@ -80,7 +83,9 @@ void cFrame::Render()
 		}
 		D3DXMATRIXA16 iden;
 		D3DXMatrixIdentity(&iden);
-		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matLocalTM);
+
 	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &iden);
 
 		g_pD3DDevice->SetMaterial(&m_pMtlTex->GetMtl());

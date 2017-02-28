@@ -76,6 +76,8 @@ void cMainGame::Update()
 
 	if (m_pCamera)
 		m_pCamera->Update(m_pCharacterController->GetPosition());
+
+	m_pWoman->MainUpate();
 }
 
 void cMainGame::Render()
