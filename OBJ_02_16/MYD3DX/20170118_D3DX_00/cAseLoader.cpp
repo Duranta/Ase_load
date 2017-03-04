@@ -564,8 +564,8 @@ void cAseLoader::InvLocalPos(cFrame & pFrame)
 			D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
 				&iter->second->GetVertex()[i].p, &matInvWorld);
 
-			D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
-				&iter->second->GetVertex()[i].p, &matInvWorld);
+			//D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
+			//	&iter->second->GetVertex()[i].p, &matInvWorld);
 
 		}
 	}
@@ -628,6 +628,9 @@ void cAseLoader::makeTM(cFrame & Frame)
 		{
 			D3DXMatrixInverse(&matInvParent, 0, &m_Frame[iter->second->GetParentName()]->GetMatWorld());
 			//iter->second->m_matLocalTM *= matInvParent;
+			// world  = local*pWorld;
+			// local = world *pWorld(-1)
+
 			iter->second->SetTM(iter->second->GetMatWorld()*matInvParent);
 		}
 	}

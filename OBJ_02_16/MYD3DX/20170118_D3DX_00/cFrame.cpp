@@ -56,14 +56,118 @@ void cFrame::MainUpate()
 void cFrame::Update(int keyFrame, D3DXMATRIXA16* pParent)
 {
 	D3DXMATRIXA16 matLocalT, matLocalR;
+	CalLocalPosMatrix(keyFrame, matLocalT);
+	CalLocalRotMatrix(keyFrame, matLocalR);
+	
+	m_matWorld = matLocalR*matLocalT;
 
-	 this->m_matLocalTM *=(*pParent);
+    m_matWorld *= (*pParent);
+	
 	vector<cFrame*>::iterator iter;
 	vector<cFrame*>::iterator iterEnd = v_child.end();
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-		 (*iter)->Update(keyFrame, &(this->m_matLocalTM));
+	
+		(*iter)->Update(keyFrame, &m_matWorld);
+	}
+}
+
+void cFrame::CalLocalPosMatrix(int nKeyFrame, D3DXMATRIXA16 & posMat)
+{
+	D3DXMatrixIdentity(&posMat);
+
+	if (m_vecPosTrack.empty())
+	{
+		posMat._41 = m_matLocalTM._41;
+		posMat._42 = m_matLocalTM._42;
+		posMat._43 = m_matLocalTM._43;
+	}
+	else if (nKeyFrame <= m_vecPosTrack.front().n)
+	{
+		posMat._41 = m_vecPosTrack.front().v.x;
+		posMat._42 = m_vecPosTrack.front().v.y;
+		posMat._43 = m_vecPosTrack.front().v.z;
+	}
+	else if (nKeyFrame >= m_vecPosTrack.back().n)
+	{
+		posMat._41 = m_vecPosTrack.back().v.x;
+		posMat._42 = m_vecPosTrack.back().v.y;
+		posMat._43 = m_vecPosTrack.back().v.z;
+	}
+	else
+	{
+		int iNext = 0;
+		for (unsigned int i = 0; i < m_vecPosTrack.size(); ++i)
+		{
+			if (m_vecPosTrack[i].n > nKeyFrame)
+			{
+				iNext = i;
+				break;
+			}
+		}
+		if (iNext == 0)return;
+		int iPrev = iNext - 1;
+
+		float t = (nKeyFrame - m_vecPosTrack[iPrev].n) / (float)(m_vecPosTrack[iNext].n - m_vecPosTrack[iPrev].n);
+
+
+		D3DXVECTOR3 v;
+		D3DXVec3Lerp(&v, &m_vecPosTrack[iPrev].v, &m_vecPosTrack[iNext].v, t);
+		posMat._41 = v.x;
+		posMat._42 = v.y;
+		posMat._43 = v.z;
+
+		// else 부분 설명
+		// Frame 1200 가정 , 0번트랙 frame =500   1번트랙 frame =1000 2번트랙 frame =1500
+		// 현재 돌아야 되는 트랙은 1번 트랙이 되야 함 .n 프레임(tick) 값 1200 은 1번과 2번 사이를 돌아야 함
+		// 돌고 있는 애니메이션은 1번 트랙을 돌아야 한다.  1200 보다 n 값이 클때 까지 간후 -1 하면 현재 트랙
+		// 값을 보간 하기 위해 t 값을 구해야 된다.
+		// 현재 트랙의 tick 값이 1000, 실제 애니메이션 tick = 1200 , 200 tick 흐름 
+		// 현재 트랙과 다음 트랙의 tick 전체값 500 , 
+		// 이를 나눔 얼마나 지나간지 비율이 나온다. 
+	}
+	
+}
+
+void cFrame::CalLocalRotMatrix(int nKeyFrame, D3DXMATRIXA16 & rotMat)
+{
+	D3DXMatrixIdentity(&rotMat);
+	if (m_vecRotTrack.empty())
+	{
+		rotMat = m_matLocalTM;
+		rotMat._41 = 0.0f;
+		rotMat._42 = 0.0f;
+		rotMat._43 = 0.0f;
+	}
+	else if (nKeyFrame <= m_vecRotTrack.front().n)
+	{
+		D3DXMatrixRotationQuaternion(&rotMat, &m_vecRotTrack.front().q);
+	}
+	else if (nKeyFrame >= m_vecRotTrack.back().n)
+	{
+		D3DXMatrixRotationQuaternion(&rotMat, &m_vecRotTrack.back().q);
+	}
+	else
+	{
+		int iNext = 0;
+		for (unsigned int i = 0; i < m_vecPosTrack.size(); ++i)
+		{
+			if (m_vecPosTrack[i].n > nKeyFrame)
+			{
+				iNext = i;
+				break;
+			}
+		}
+		if (iNext == 0)return;
+
+		int iPrev = iNext - 1;
+
+		float t = (nKeyFrame - m_vecRotTrack[iPrev].n) / (float)(m_vecRotTrack[iNext].n - m_vecRotTrack[iPrev].n);
+
+		D3DXQUATERNION q;
+		D3DXQuaternionSlerp(&q, &m_vecRotTrack[iPrev].q, &m_vecRotTrack[iNext].q, t);
+		D3DXMatrixRotationQuaternion(&rotMat, &q);
 	}
 }
 
@@ -83,8 +187,8 @@ void cFrame::Render()
 		}
 		D3DXMATRIXA16 iden;
 		D3DXMatrixIdentity(&iden);
-	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
-		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matLocalTM);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matLocalTM);
 
 	//	g_pD3DDevice->SetTransform(D3DTS_WORLD, &iden);
 

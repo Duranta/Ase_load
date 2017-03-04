@@ -66,4 +66,7 @@ public:
 	// 애니메이션 추가. 
 	//void Update(int iKeyFrame , D3DXMATRIXA16* pMatParent);
 	void SetTickData(ST_FRAMFE_DATA data) { m_stTickData = data; }
+	void CalLocalPosMatrix(int nKeyFrame, D3DXMATRIXA16& posMat);
+	void CalLocalRotMatrix(int nKeyFrame, D3DXMATRIXA16& rotMat);
+
 };
