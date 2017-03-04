@@ -373,6 +373,7 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 	makeNode(Frame);
 	//makeTM(Frame);
 	InvLocalPos(Frame);
+	//Frame.MainCalLocalTM();
 }
 
 void cAseLoader::LoadMtlLib(char* szFilePath)
@@ -502,7 +503,7 @@ void cAseLoader::LoadMtlLib(char* szFilePath)
 		}
 		else if (strcmp(lineHeader, "*SCENE_FIRSTFRAME") == 0)
 		{
-			int iTick=0;
+			int iTick = 0;
 			fscanf_s(fp, "%d\n", &iTick, sizeof(int));
 			m_stTickData.nFirstFrame = iTick;
 		}
@@ -560,13 +561,18 @@ void cAseLoader::InvLocalPos(cFrame & pFrame)
 		for (int i = 0; i < iter->second->GetVertex().size(); ++i)
 		{
 			D3DXMATRIXA16 matInvWorld;
-			D3DXMatrixInverse(&matInvWorld, 0, &iter->second->GetMatWorld());
+			if (strcmp(iter->second->GetParentName().c_str(), "NULL") == 0)
+			{
+				D3DXMatrixIdentity(&matInvWorld);
+			}
+			else
+			{
+				D3DXMatrixInverse(&matInvWorld, 0, &m_Frame[iter->second->GetParentName()]->GetMatWorld());
+			}
 			D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
 				&iter->second->GetVertex()[i].p, &matInvWorld);
-
 			//D3DXVec3TransformCoord(&iter->second->GetVertex()[i].p,
 			//	&iter->second->GetVertex()[i].p, &matInvWorld);
-
 		}
 	}
 }

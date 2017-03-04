@@ -50,17 +50,17 @@ void cFrame::MainUpate()
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-		 (*iter)->Update(nKeyFrame, &m_matLocalTM);
+		 (*iter)->Update(nKeyFrame, &m_matWorld);
 	}
 }
 void cFrame::Update(int keyFrame, D3DXMATRIXA16* pParent)
 {
-	D3DXMATRIXA16 matLocalT, matLocalR;
-	CalLocalPosMatrix(keyFrame, matLocalT);
-	CalLocalRotMatrix(keyFrame, matLocalR);
+	//D3DXMATRIXA16 matLocalT, matLocalR;
+	//CalLocalPosMatrix(keyFrame, matLocalT);
+	//CalLocalRotMatrix(keyFrame, matLocalR);
 	
-	m_matWorld = matLocalR*matLocalT;
-
+	//m_matWorld = matLocalR*matLocalT;
+    m_matWorld = m_matLocalTM;
     m_matWorld *= (*pParent);
 	
 	vector<cFrame*>::iterator iter;
@@ -68,7 +68,6 @@ void cFrame::Update(int keyFrame, D3DXMATRIXA16* pParent)
 
 	for (iter = v_child.begin(); iter != iterEnd; ++iter)
 	{
-	
 		(*iter)->Update(keyFrame, &m_matWorld);
 	}
 }
@@ -168,6 +167,36 @@ void cFrame::CalLocalRotMatrix(int nKeyFrame, D3DXMATRIXA16 & rotMat)
 		D3DXQUATERNION q;
 		D3DXQuaternionSlerp(&q, &m_vecRotTrack[iPrev].q, &m_vecRotTrack[iNext].q, t);
 		D3DXMatrixRotationQuaternion(&rotMat, &q);
+	}
+}
+
+void cFrame::MainCalLocalTM()
+{
+	vector<cFrame*>::iterator iter;
+	vector<cFrame*>::iterator iterEnd = v_child.end();
+	for (iter = v_child.begin(); iter != iterEnd; ++iter)
+	{
+		(*iter)->CalLocalTM(m_matWorld);
+	}
+}
+
+void cFrame::CalLocalTM(D3DXMATRIXA16 & parentMat)
+{
+	vector<cFrame*>::iterator iter;
+	vector<cFrame*>::iterator iterEnd = v_child.end();
+
+	D3DXMATRIXA16 matInvWorld;
+	D3DXMatrixInverse(&matInvWorld, 0, &parentMat);
+	// 노말 , 정점 
+	for (int i = 0; i < this->GetVertex().size(); ++i)
+	{
+		D3DXVec3TransformCoord(&this->GetVertex()[i].p,
+			&this->GetVertex()[i].p, &matInvWorld);
+	}
+
+	for (iter = v_child.begin(); iter != iterEnd; ++iter)
+	{
+		(*iter)->CalLocalTM(m_matWorld);
 	}
 }
 

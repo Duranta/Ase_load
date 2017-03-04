@@ -69,4 +69,6 @@ public:
 	void CalLocalPosMatrix(int nKeyFrame, D3DXMATRIXA16& posMat);
 	void CalLocalRotMatrix(int nKeyFrame, D3DXMATRIXA16& rotMat);
 
+	void MainCalLocalTM();
+	void CalLocalTM(D3DXMATRIXA16& parentMat);
 };
