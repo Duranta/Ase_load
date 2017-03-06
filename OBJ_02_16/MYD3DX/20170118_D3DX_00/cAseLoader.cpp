@@ -271,7 +271,7 @@ void cAseLoader::Load(IN char* szFilePath, IN D3DXMATRIXA16* pMat,
 		{
 			ST_ROT_SAMPLE rot;
 
-			fscanf(fp, "%d %f %f %f %f", &rot.n, &rot.q.x, &rot.q.y, &rot.q.z, &rot.q.w);
+			fscanf(fp, "%d %f %f %f %f", &rot.n, &rot.q.x, &rot.q.z, &rot.q.y, &rot.q.w);
 
 			// 처음 들어왔다면 tackRot 에 = rot 대입
 			if (pFrame->m_vecRotTrack.empty())
